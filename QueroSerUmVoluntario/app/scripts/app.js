@@ -19,47 +19,15 @@ angular.module('volunteerApp', ['ui.router','ngResource'])
                 }
             }
 		})
-        // route for the aboutus page
-        .state('app.aboutus', {
-            url:'aboutus',
+        // route for the register page
+        .state('app.register', {
+            url:'register',
             views: {
                 'content@': {
-                    templateUrl : 'views/aboutus.html',
-                    controller  : 'AboutController'
+                    templateUrl : 'views/register.html',
+                    controller  : 'RegisterController'
                }
             }
         })
-                // route for the contactus page
-        .state('app.contactus', {
-            url:'contactus',
-            views: {
-                'content@': {
-                    templateUrl : 'views/contactus.html',
-                    controller  : 'ContactController'
-                 }
-            }
-        })
-
-        // route for the menu page
-        .state('app.menu', {
-            url: 'menu',
-            views: {
-                'content@': {
-                    templateUrl : 'views/menu.html',
-                    controller  : 'MenuController'
-                }
-            }
-        })
-
-        // route for the dishdetail page
-        .state('app.dishdetails', {
-            url: 'menu/:id',
-            views: {
-                'content@': {
-                    templateUrl : 'views/dishdetail.html',
-                    controller  : 'DishDetailController'
-               }
-            }
-        });
         $urlRouterProvider.otherwise('/');
 })
