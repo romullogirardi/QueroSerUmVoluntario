@@ -1,0 +1,26 @@
+- BD:
+1) Rodar o BD com o comando: json-server --watch db.json
+
+- ATUALIZAÇÃO DOS ARQUIVOS EXTERNOS:
+- Atualização manual:
+1) Bootstrap: Baixar os arquivos no site e atualizar as pastas css, fonts e js (avaliar necessidade de atualizar o bootstrap-social, que configura os botões de redes sociais)
+2) Font-awesome: Baixar os arquivos no site e atualizar as pastas css e fonts
+3) JQuery: Atualizar o link no index.html
+4) AngularJS: Atualizar os links (angular, angular-ui-router e angular-resource) no index.html
+5) Google Maps: Atualizar configuração do mapa na página de contato
+- Atualização via Bower:
+1) Conferir se tudo está instalado corretamente: bower --version (senão sudo npm install -g <pacote>)
+2) Criar um bower.json através do comando bower init
+3) Instalar os pacotes necessários: bower install bootstrap -S, bower install bootstrap-social -S, bower install font-awesome -S, bower install jquery -S, bower install angular -S, bower install angular-ui-router -S, bower install angular-resource -S
+OBS: Os pacotes serão baixados para a pasta bower_components, que será criada automaticamente
+
+- CONFIGURANDO O GULP:
+1) Conferir se tudo está instalado corretamente: node --version, npm --version, gulp --version (senão sudo npm install -g <pacote>)
+2) Criar um package.json através do comando npm init
+3) sudo npm install --save-dev gulp
+4) sudo npm install jshint gulp-jshint jshint-stylish gulp-imagemin gulp-concat gulp-uglify gulp-minify-css gulp-usemin gulp-cache gulp-changed gulp-rev gulp-rename gulp-notify  browser-sync del --save-dev
+5) Criar o gulpfile.js
+6) Marcar os links css e js a serem compilados
+7) Rodar com comando gulp
+8) Abrir no browser via gulp watch
+

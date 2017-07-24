@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="volunteerApp">
+    
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <title>Quero ser um voluntário</title>    
+    <!-- build:css styles/main.css -->
+	<!-- Bootstrap -->
+	<link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="css/bootstrap-social/bootstrap-social.css" rel="stylesheet">
+	<!-- Font-awesome -->
+    <link href="css/font-awesome/font-awesome.min.css" rel="stylesheet">
+     <!-- Arquivo de customização do layout da aplicação -->
+    <link href="styles/mystyles.css" rel="stylesheet">
+    <!-- endbuild -->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div ui-view="header"></div>
+    <div ui-view="content"></div>
+    <div ui-view="footer"></div>
+
+	<!-- Jquery (link local) -->
+<!--     <script src="js/jquery/dist/jquery.min.js"></script> -->
+	<!-- AngularJS (link local) -->
+<!--     <script src="js/angular/angular.min.js"></script> -->
+<!--     <script src="js/angular-ui-router/release/angular-ui-router.min.js"></script> -->
+<!--     <script src="js/angular-resource/angular-resource.min.js"></script> -->
+	<!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular-ui-router/1.0.0-rc.1/angular-ui-router.min.js"></script>
+    <!-- build:js scripts/main.js -->
+	<!-- Bootstrap -->
+    <script src="js/bootstrap/bootstrap.min.js"></script>
+     <!-- Arquivos de customização dos scripts da aplicação -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers.js"></script>
+    <script src="scripts/services.js"></script>   
+    <!-- endbuild -->
+</body>
+
+</html>
