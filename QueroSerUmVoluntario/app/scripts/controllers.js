@@ -16,7 +16,8 @@ angular.module('volunteerApp')
 
 .controller('RegisterController', ['$scope', 'organizationFactory', function($scope, organizationFactory) {
     $scope.registerOrganization = function() {
-    	organizationFactory.getOrganizations.save($scope.organization);
+    	console.log($scope.organization);
+    	organizationFactory.getOrganizations().save($scope.organization);
         $scope.organization = {
     	      id:"",
     	      email:"",
