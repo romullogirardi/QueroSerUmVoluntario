@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
     
@@ -8,7 +7,7 @@
 
         <div class="row row-content">
             <div class="col-xs-12">
-                <div class="media">
+                <div class="media" ng-repeat="organization in organizations">
                     <div class="media-left media-middle">
                         <img class="media-object img-thumbnail"
                          ng-src={{organization.image}} alt="{{organization.name}}"/>

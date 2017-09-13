@@ -97,3 +97,12 @@ body {
 #rating {
     color: blue;
 }
+#fileChooserDiv { 
+	position:relative; 
+}
+#fileInput { 
+	position:absolute; top:0; left:0; border:1px solid #ff0000; opacity:0.01; z-index:1; 
+}
+#fileChooserText { 
+	padding-top:7px;
+}

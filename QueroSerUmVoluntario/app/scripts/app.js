@@ -1,5 +1,5 @@
 'use strict';
-angular.module('volunteerApp', ['ui.router','ngResource'])
+angular.module('volunteerApp', ['ui.router', 'ngCookies'])
 
 .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
@@ -26,6 +26,16 @@ angular.module('volunteerApp', ['ui.router','ngResource'])
                 'content@': {
                     templateUrl : 'views/register.html',
                     controller  : 'RegisterController'
+               }
+            }
+        })
+        // route for the activities page
+        .state('app.activities', {
+            url:'activities',
+            views: {
+                'content@': {
+                    templateUrl : 'views/activities.html',
+                    controller  : 'ActivitiesController'
                }
             }
         })

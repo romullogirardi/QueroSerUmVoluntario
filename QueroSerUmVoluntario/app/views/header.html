@@ -2,7 +2,7 @@
 <html>
 
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" ng-controller="LoginController">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -15,20 +15,35 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
+                    <li ng-show="!hasLoggedUser()">
                     	<a ui-sref="app.register">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Cadastrar</a>
                     </li>
-                    <li>
+                    <li ng-show="!hasLoggedUser()">
                     	<a data-toggle="modal" data-target="#loginModal">
                     	<span class="glyphicon glyphicon-log-in"></span> Entrar</a>
+                    </li>
+                    <li ng-show="hasLoggedUser()">
+                    	<a ui-sref="app.register">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar cadastro</a>
+                    </li>
+                    <li ng-show="hasLoggedUser()">
+                    	<a ui-sref="app.activities">
+                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Gerenciar atividades</a>
+                    </li>
+                    <li ng-show="hasLoggedUser()">
+                    	<a ng-click="logout()">
+                    	<span class="glyphicon glyphicon-log-out"></span> Sair</a>
+                    </li>
+                    <li ng-show="hasLoggedUser()">
+                    	<div style="padding-top: 15px;"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Oi, <span ng-bind="loggedUserAcronym"></span></div>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>         
 
-    <div id="loginModal" class="modal fade" role="dialog">
+	<div id="loginModal" class="modal fade" role="dialog" ng-controller="LoginController">
         <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -37,35 +52,36 @@
                 <h4 class="modal-title">Entrar </h4>
             </div>
             <div class="modal-body">
-                <form class="form-inline">
+                <form class="form-horizontal" name="loginForm" ng-submit="login()">
+	                <div class="form-group">
+	                   <label for="email" class="col-sm-1 control-label">E-mail</label>
+	                   <div class="col-sm-11">
+	                       <input type="email" class="form-control" id="loginEmail" placeholder="Seu e-mail de acesso">
+	                   </div>
+	               </div>
+	               <div class="form-group">
+	                   <label for="password" class="col-sm-1 control-label">Senha</label>
+	                   <div class="col-sm-11">
+	                       <input type="password" class="form-control" id="loginPassword" placeholder="Sua senha de acesso">
+	                   </div>
+	               </div>
+                   <a style="display:block;text-align:right;padding-top:7px" ng-click="forgetPassword()">Esqueci minha senha</a>
+                   <label class="col-sm-12 alert alert-danger" id="loginErrorMessage">Dados de acesso inválidos</label>
                     <div class="form-group">
-                        <input type="text" placeholder="Email" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" placeholder="Password" class="form-control">
-                    </div>
-                    <div class="checkbox">
-                        <label><input type="checkbox"> Remember me</label>
-                    </div>
-                    <div class="form-group" style="padding-top: 7px">
-                        <button type="submit" class="btn btn-info">Entrar</button>
-                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+                    	<div class="col-sm-12">
+	                        <button type="submit" class="btn btn-info">Entrar</button>
+	                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+                   		</div>
                     </div>
                 </form>
             </div>
         </div>
         </div>
     </div>
-
-            </div>
-        </div>
-        </div>
-    </div>
-
+    
     <header class="jumbotron">
 
         <!-- Main component for a primary marketing message or call to action -->
-
         <div class="container">
             <div class="row row-header">
                 <div class="col-xs-12 col-sm-8">
