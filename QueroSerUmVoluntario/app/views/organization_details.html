@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    
+<body>
+
+    <div class="container" ng-controller="IndexController">
+
+        <div class="row row-content">
+            <div class="col-xs-12">
+                <div class="media" ng-repeat="organization in organizations">
+                    <div class="media-left media-middle">
+                        <img class="media-object img-thumbnail"
+                         ng-src={{organization.image}} alt="{{organization.name}}"/>
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h2 class="media-heading">{{organization.name}} ({{organization.acronym}})
+                        <p>{{organization.description}}</p>
+                        <p>Religião: {{organization.religion}}</p>
+                        <p>Endereço: {{organization.address}}</p>
+                        <p>Telefone: {{organization.phone}}</p>
+                        <p>E-mail: {{organization.email}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</body>
+
+</html>

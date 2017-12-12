@@ -4,29 +4,115 @@ angular.module('volunteerApp')
 .controller('IndexController', ['$scope', 'organizationFactory', function($scope, organizationFactory) {
     
 	//Reading organizations
-    $scope.organizations = [];
     organizationFactory.getOrganizations()
     .then(
         function(response) {
+        	
+        	//Reading organizations from json server
             $scope.organizations = response.data;
-            console.log("Organizações lidas com sucesso");
+            
+            //Mounting dataset to load into table
+            var dataSet = [];
+            for(var organizationIndex = 0; organizationIndex < $scope.organizations.length; organizationIndex++) {
+            	if($scope.organizations[organizationIndex].activities) {
+	            	for(var activityIndex = 0; activityIndex < $scope.organizations[organizationIndex].activities.length; activityIndex++) {
+	                	dataSet.push([
+  							$scope.organizations[organizationIndex].activities[activityIndex].category,
+							$scope.organizations[organizationIndex].activities[activityIndex].periodicity,
+							daysToString($scope.organizations[organizationIndex].activities[activityIndex]),
+   							hourToString($scope.organizations[organizationIndex].activities[activityIndex]),
+							$scope.organizations[organizationIndex].acronym, 
+							$scope.organizations[organizationIndex].address 
+	                    ]);
+	            	}
+            	}
+            }
+            
+            console.log("Organizações/Atividades lidas com sucesso");
+
+           //Loading table (https://datatables.net/examples/basic_init/zero_configuration.html)
+            if ($.fn.dataTable.isDataTable('#table')) {
+                table = $('#table').DataTable();
+            }
+            else {
+                table = $('#table').DataTable( {
+                    "order": [[ 0, "asc" ]],
+                    "language": {
+                    	"sEmptyTable": "Nenhum registro encontrado",
+                        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sInfoThousands": ".",
+                        "sLengthMenu": "_MENU_ resultados por página",
+                        "sLoadingRecords": "Carregando...",
+                        "sProcessing": "Processando...",
+                        "sZeroRecords": "Nenhum registro encontrado",
+                        "sSearch": "Pesquisar",
+                        "oPaginate": {
+                            "sNext": "Próximo",
+                            "sPrevious": "Anterior",
+                            "sFirst": "Primeiro",
+                            "sLast": "Último"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Ordenar colunas de forma ascendente",
+                            "sSortDescending": ": Ordenar colunas de forma descendente"
+                        }
+                    },
+                    "data": dataSet,
+                    "columns": [
+                        {title: "Categoria"},
+                        {title: "Periodicidade"},
+                        {title: "Dias da semana"},
+                        {title: "Horário"},
+                        {title: "Organização"},
+                        {title: "Endereço"}
+                    ]
+                });
+            }
         },
         function(response) {
-            console.log("Erro na leitura das organizações: "+response.status + " " + response.statusText);
+            console.log("Erro na leitura das Organizações/Atividades: "+response.status + " " + response.statusText);
         }
     );
-}])
+    
+    function daysToString(activity) {
+
+    	var toString = "";
+    	toString += (activity.monday) ? "S" : "";
+    	var separator = (toString.length == 0) ? "" : " ";
+    	toString += (activity.tuesday) ? (separator + "T") : "";
+    	var separator = (toString.length == 0) ? "" : " ";
+    	toString += (activity.wednesday) ? (separator + "Q") : "";
+    	var separator = (toString.length == 0) ? "" : " ";
+    	toString += (activity.thursday) ? (separator + "Q") : "";
+    	var separator = (toString.length == 0) ? "" : " ";
+    	toString += (activity.friday) ? (separator + "S") : "";
+    	var separator = (toString.length == 0) ? "" : " ";
+    	toString += (activity.saturday) ? (separator + "S") : "";
+    	var separator = (toString.length == 0) ? "" : " ";
+    	toString += (activity.sunday) ? (separator + "D") : "";
+    	return toString;
+    };
+    
+    function hourToString(activity) {
+		return activity.beginningTime + " - " + activity.endingTime;
+	};
+ }])
 
 .controller('RegisterController', ['$scope', '$location', 'organizationFactory', 'userPersistenceFactory', function($scope, $location, organizationFactory, userPersistenceFactory) {
     
 	//Creating the religions array
-    var religions = [{value:"Sem religião", label:"Sem religião"},
-                     {value:"Católica", label:"Católica"}, 
-                     {value:"Evangélica",label:"Evangélica"},
-                     {value:"Espírita",label:"Espírita"},
-                     {value:"Ateu",label:"Ateu"}];
+    var religions = [
+	     {value:"Sem religião", label:"Sem religião"},
+	     {value:"Católica", label:"Católica"}, 
+	     {value:"Evangélica",label:"Evangélica"},
+	     {value:"Espírita",label:"Espírita"},
+	     {value:"Ateu",label:"Ateu"}
+	];
     $scope.religions = religions;
-
+    
     //Putting a change listener on file chooser
     var imageURL = "";
 	jQuery('#fileInput').on('change', function (event) {
@@ -79,6 +165,20 @@ angular.module('volunteerApp')
 	});
 	
 	//Defining function to register an organization
+	$scope.organization = {
+	    id:"",
+	    email:"",
+	    password:"",
+	    passwordConfirmation:"",
+	    name:"",
+	    acronym:"",
+	    image:"",
+	    religion:"Sem religião",
+	    description:"",
+	    address:"",
+	    phone:"",
+	    activities:[]
+	};
 	$scope.registerOrganization = function() {
 
 		//Registering organization
@@ -87,12 +187,12 @@ angular.module('volunteerApp')
 	    	organizationFactory.postOrganization($scope.organization)
 	    	.then(
     	        function(response) {
-    	        	console.log("Cadastro realizado com sucesso");
+    	        	console.log("Cadastro da organização realizado com sucesso");
     	            //Directing to home page
     	            $location.path('/');
     	        },
     	        function(response) {
-    	        	console.log("Erro no cadastro: " + response.status + " " + response.statusText);
+    	        	console.log("Erro no cadastro da organização: " + response.status + " " + response.statusText);
     	            //Directing to home page
     	            $location.path('/');
     	        }
@@ -255,6 +355,25 @@ angular.module('volunteerApp')
 
 .controller('ActivitiesController', ['$scope', '$state', 'organizationFactory', 'userPersistenceFactory', function($scope, $state, organizationFactory, userPersistenceFactory) {
     
+	//Creating the categories array
+    var categories = [
+	     {value:"Educação", label:"Educação"},
+	     {value:"Recreação infantil", label:"Recreação infantil"}, 
+	     {value:"Distribuição de alimentos",label:"Distribuição de alimentos"},
+	     {value:"Artesanato",label:"Artesanato"},
+	     {value:"Esporte",label:"Esporte"}
+	];
+    $scope.categories = categories;
+
+    //Creating the periodicities array
+    var periodicities = [
+	     {value:"Semanal", label:"Semanal"},
+	     {value:"Mensal", label:"Mensal"}, 
+	     {value:"Semestral",label:"Semestral"},
+	     {value:"Anual",label:"Anual"}
+	];
+    $scope.periodicities = periodicities;
+
     //Loading logged user
     if(!(userPersistenceFactory.getUser() == null)) {
 		var organizationIndex = userPersistenceFactory.getUser();
@@ -271,9 +390,41 @@ angular.module('volunteerApp')
     }
     
     //Defining function to register an activity in a organization
-    $scope.creatingActivity = {name:"" };
+    $scope.creatingActivity = {name:"", category:"Educação", description:"", periodicity:"Semanal", monday:true, tuesday:true,  
+    		wednesday:true,  thursday:true,  friday:true,  saturday:true,  sunday:true, beginningTime:"12:00", endingTime:"13:00"};
+    //Referência: http://timepicker.co/
+    jQuery('#beginningTime').timepicker({
+        timeFormat: 'HH:mm',
+        interval: 30,
+        minTime: '00',
+        maxTime: '23:30',
+        defaultTime: '12',
+        startTime: '00:00',
+        dynamic: true,
+        dropdown: true,
+        scrollbar: true
+    });
+    jQuery('#endingTime').timepicker({
+        timeFormat: 'HH:mm',
+        interval: 30,
+        minTime: '00',
+        maxTime: '23:30',
+        defaultTime: '13',
+        startTime: '00:00',
+        dynamic: true,
+        dropdown: true,
+        scrollbar: true
+    });
+    //Referência: http://jonthornton.github.io/jquery-timepicker/
+//    jQuery('#beginningTime').timepicker();
+//    jQuery('#endingTime').timepicker();
+
 	$scope.pushActivity = function() {
 
+		//Getting time values
+		$scope.creatingActivity.beginningTime = jQuery('#beginningTime').val();
+		$scope.creatingActivity.endingTime = jQuery('#endingTime').val();
+		
 		//Pushing activity
         $scope.organization.activities.push($scope.creatingActivity);
 		
@@ -282,15 +433,19 @@ angular.module('volunteerApp')
     	.then(
 	        function(response) {
 	        	console.log("Atualização das atividades realizada com sucesso");
+	        	
+	        	//Refreshing form
+	        	$scope.creatingActivity = {name:"", category:"Educação", description:"", periodicity:"Semanal", monday:true, tuesday:true, 
+	        			wednesday:true,  thursday:true,  friday:true,  saturday:true,  sunday:true, beginningTime:"12:00", endingTime:"13:00"};
+	            $scope.activityForm.$setPristine();
+
+	            //Refresh page
+	    		setTimeout(function(){$state.reload();}, 250);
 	        },
 	        function(response) {
 	        	console.log("Erro na atualização das atividades: " + response.status + " " + response.statusText);
 	        }
 	    );
-
-    	//Refreshing form
-    	$scope.creatingActivity = {name:""};
-        $scope.activityForm.$setPristine();
     };
 
     //Defining function to delete an activity in a organization
@@ -311,28 +466,61 @@ angular.module('volunteerApp')
 	    );
     };
     
-    //Defining function to show updating activity modal
-    $scope.showUpdatingActivityModal = function(index) {
+    //Defining function to set updating index using a hidden form input (because modals have sync problems with angularJS)
+    $scope.setUpdatingActivityIndex = function(index) {
+    	console.log("Setou index = " + index);
     	jQuery("#activityIndex").val(index);
-        $scope.updatingActivity = $scope.organization.activities[index];
-        jQuery("#updatingActivityName").val($scope.updatingActivity.name);
-    	jQuery("#activityModal").modal('show');
 	};
+	
+	//Defining function to get updating index using a hidden form input (because modals have sync problems with angularJS)
+	$scope.getActivityIndex = function() {
+    	console.log("Leu index = " + jQuery("#activityIndex").val());
+		return jQuery("#activityIndex").val();
+	};
+	
+	jQuery('#activityModal').on('shown.bs.modal', function (e) {
+		jQuery('#updatingActivityBeginningTime').timepicker({
+		    timeFormat: 'HH:mm',
+		    interval: 30,
+		    minTime: '00',
+		    maxTime: '23:30',
+		    defaultTime: '12',
+		    startTime: '00:00',
+		    dynamic: true,
+		    dropdown: true,
+		    scrollbar: true,
+		    zindex: 9999
+		});
+		jQuery('#updatingActivityBeginningTime').val($scope.organization.activities[jQuery("#activityIndex").val()].beginningTime);
+		jQuery('#updatingActivityEndingTime').timepicker({
+	        timeFormat: 'HH:mm',
+	        interval: 30,
+	        minTime: '00',
+	        maxTime: '23:30',
+	        defaultTime: '13',
+	        startTime: '00:00',
+	        dynamic: true,
+	        dropdown: true,
+	        scrollbar: true,
+	        zindex: 9999
+	    });
+		jQuery('#updatingActivityEndingTime').val($scope.organization.activities[jQuery("#activityIndex").val()].endingTime);
+//		jQuery('#updatingActivityBeginningTime').timepicker();
+//		jQuery('#updatingActivityEndingTime').timepicker();
+	});
 	
     //Defining function to update an activity in a organization
     $scope.updateActivity = function() {
 
-    	//Getting updating activity index
-    	var index = jQuery("#activityIndex").val();
+		//Getting time values
+		$scope.organization.activities[jQuery("#activityIndex").val()].beginningTime = jQuery('#updatingActivityBeginningTime').val();
+		$scope.organization.activities[jQuery("#activityIndex").val()].endingTime = jQuery('#updatingActivityEndingTime').val();
     	
-		//Updating activity
-        $scope.organization.activities[index] = $scope.updatingActivity;
-		
 		//Updating organization
     	organizationFactory.updateOrganization($scope.organization)
     	.then(
 	        function(response) {
-	        	console.log("Atualização realizada com sucesso na atividade de índice = " + index);
+	        	console.log("Atualização da atividade realizada com sucesso");
 	    		
 	    		//Dismissing activity modal
 	    		jQuery("#activityModal").modal('hide');
@@ -341,13 +529,33 @@ angular.module('volunteerApp')
 	    		setTimeout(function(){$state.reload();}, 250);
 	        },
 	        function(response) {
-	        	console.log("Erro na atualização: " + response.status + " " + response.statusText);
-	    		//Dismissing activity modal
+	        	console.log("Erro na atualização da atividade: " + response.status + " " + response.statusText);
+
+	        	//Dismissing activity modal
 	    		jQuery("#activityModal").modal('hide');
 	        }
 	    );
 
     	//Refreshing form
         $scope.updatingActivityForm.$setPristine();
+    };
+    
+    $scope.daysToString = function(activity) {
+    	
+    	var toString = "";
+    	toString += (activity.monday) ? "Segundas" : "";
+    	var separator = (toString.length == 0) ? "" : ", ";
+    	toString += (activity.tuesday) ? (separator + "Terças") : "";
+    	var separator = (toString.length == 0) ? "" : ", ";
+    	toString += (activity.wednesday) ? (separator + "Quartas") : "";
+    	var separator = (toString.length == 0) ? "" : ", ";
+    	toString += (activity.thursday) ? (separator + "Quintas") : "";
+    	var separator = (toString.length == 0) ? "" : ", ";
+    	toString += (activity.friday) ? (separator + "Sextas") : "";
+    	var separator = (toString.length == 0) ? "" : ", ";
+    	toString += (activity.saturday) ? (separator + "Sábados") : "";
+    	var separator = (toString.length == 0) ? "" : ", ";
+    	toString += (activity.sunday) ? (separator + "Domingos") : "";
+    	return toString;
     };
 }]);

@@ -21,32 +21,99 @@
 			<div class="col-xs-9 col-xs-offset-1">
 	            <p><h4><b>Atividades</b></h4></p>
 	            <blockquote ng-repeat="activity in organization.activities">
-	              <span ng-bind="organization.activities[$index].name"></span><br/>
-	              <p>{{activity.name}}</p>
-	              <footer>{{activity.name}}, {{activity.name}}</footer>
+	              <p><b>{{activity.name}}</b></p>
+	              <p>Categoria: {{activity.category}}</p>
+	              <p>Descrição: {{activity.description}}</p>
+	              <p>Periodicidade: {{activity.periodicity}}</p>
+	              <p>Dias da semana: {{daysToString(activity)}}</p>
+	              <p>Horário de início: {{activity.beginningTime}}</p>
+	              <p>Horário de término: {{activity.endingTime}}</p>
 	              <button class="btn btn-default" style="margin-top:9px" ng-click="removeActivity($index)">
 	              	<span class="glyphicon glyphicon-remove"></span> Remover</button>
-	              <button class="btn btn-default" style="margin-top:9px" ng-click="showUpdatingActivityModal($index)">
+	              <button class="btn btn-default" style="margin-top:9px" ng-click="setUpdatingActivityIndex($index)" data-toggle="modal" data-target="#activityModal">
 	              	<span class="glyphicon glyphicon-pencil"></span> Atualizar</button>
 	            </blockquote>
 	
+				<hr/>
+	
 	            <blockquote ng-show="activityForm.$valid">
-	              <p>{{creatingActivity.name}}</p>
-	              <p>{{creatingActivity.name}}</p>
-	              <footer>{{creatingActivity.name}}, {{creatingActivity.name}}</footer>
+	              <p><b>{{creatingActivity.name}}</b></p>
+	              <p>Categoria: {{creatingActivity.category}}</p>
+	              <p>Descrição: {{creatingActivity.description}}</p>
+	              <p>Periodicidade: {{creatingActivity.periodicity}}</p>
+	              <p>Dias da semana: {{daysToString(creatingActivity)}}</p>
+	              <p>Horário de início: {{creatingActivity.beginningTime}}</p>
+	              <p>Horário de término: {{creatingActivity.endingTime}}</p>
 	            </blockquote>
 	            <form class="form-horizontal" name="activityForm" ng-submit="pushActivity()" novalidate>
 	                <div class="form-group" ng-class="{ 'has-error' : activityForm.name.$error.required && !activityForm.name.$pristine }">
-	                    <label for="name" class="col-sm-1 control-label">Nome</label>
-	                    <div class="col-sm-11">
+	                    <label for="name" class="col-sm-2 control-label">Nome</label>
+	                    <div class="col-sm-10">
 	                        <input type="text" class="form-control" id="name" name="name" placeholder="Nome da atividade"
 	                        ng-model="creatingActivity.name" required>
 	                        <span ng-show="activityForm.name.$error.required && !activityForm.name.$pristine" class="help-block">Insira o nome da atividade</span>
 	                    </div>
 	                </div>
+	               <div class="form-group">
+	                   <label for="category" class="col-sm-2 control-label">Categoria</label>
+	                   <div class="col-sm-10">
+		                   <select class="form-control" id="category"
+		                      ng-model="creatingActivity.category"
+		                      ng-options="category.value as category.label for category in categories">
+		                   </select>
+	                   </div>
+	               </div>
+	                <div class="form-group" ng-class="{ 'has-error' : activityForm.description.$error.required && !activityForm.description.$pristine }">
+	                    <label for="description" class="col-sm-2 control-label">Descrição</label>
+	                    <div class="col-sm-10">
+	                        <input type="text" class="form-control" id="description" name="description" placeholder="Descrição da atividade"
+	                        ng-model="creatingActivity.description" required>
+	                        <span ng-show="activityForm.description.$error.required && !activityForm.description.$pristine" class="help-block">Insira a descrição da atividade</span>
+	                    </div>
+	                </div>
+	               <div class="form-group">
+	                   <label for="periodicity" class="col-sm-2 control-label">Periodicidade</label>
+	                   <div class="col-sm-10">
+		                   <select class="form-control" id="periodicity"
+		                      ng-model="creatingActivity.periodicity"
+		                      ng-options="periodicity.value as periodicity.label for periodicity in periodicities">
+		                   </select>
+	                   </div>
+	               </div>
+					<div class="form-group" ng-class="{ 'has-error' : !creatingActivity.monday && !creatingActivity.tuesday && !creatingActivity.wednesday &&
+							!creatingActivity.thursday && !creatingActivity.friday && !creatingActivity.saturday && !creatingActivity.sunday}">
+                        <label class="col-sm-2 control-label">Dias</label>                        
+                        <div class="col-sm-10">
+                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" ng-model="creatingActivity.monday"> Segunda</label>
+                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" ng-model="creatingActivity.tuesday"> Terça</label>
+                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" ng-model="creatingActivity.wednesday"> Quarta</label>
+                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" ng-model="creatingActivity.thursday"> Quinta</label>
+                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" ng-model="creatingActivity.friday"> Sexta</label>
+                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" ng-model="creatingActivity.saturday"> Sábado</label>
+                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" ng-model="creatingActivity.sunday"> Domingo</label>
+                            <span ng-show="!creatingActivity.monday && !creatingActivity.tuesday && !creatingActivity.wednesday && !creatingActivity.thursday && 
+                            	!creatingActivity.friday && !creatingActivity.saturday && !creatingActivity.sunday" class="help-block">A atividade deve ocorrer em algum dia da semana</span>
+                        </div>
+                    </div>	                
+                    <div class="form-group" ng-class="{ 'has-error' : activityForm.beginningTime.$error.required && !activityForm.beginningTime.$pristine }">
+	                    <label for="beginningTime" class="col-sm-2 control-label">Início</label>
+	                    <div class="col-sm-10">
+	                        <input type="text" class="form-control" id="beginningTime" name="beginningTime" ng-model="creatingActivity.beginningTime" ng-readonly="true" required>
+	                        <span ng-show="activityForm.beginningTime.$error.required && !activityForm.beginningTime.$pristine" class="help-block">Insira o horário de início da atividade</span>
+	                    </div>
+	                </div>
+	                <div class="form-group" ng-class="{ 'has-error' : activityForm.endingTime.$error.required && !activityForm.endingTime.$pristine }">
+	                    <label for="endingTime" class="col-sm-2 control-label">Término</label>
+	                    <div class="col-sm-10">
+	                        <input type="text" class="form-control" id="endingTime" name="endingTime" ng-model="creatingActivity.endingTime" ng-readonly="true" required>
+	                        <span ng-show="activityForm.endingTime.$error.required && !activityForm.endingTime.$pristine" class="help-block">Insira o horário de término da atividade</span>
+	                    </div>
+	                </div>
 	                <div class="form-group">
-	                    <div class="col-sm-offset-1 col-sm-11">
-	                        <button type="submit" class="btn btn-primary" ng-disabled="activityForm.$invalid">Cadastrar nova atividade</button>
+	                    <div class="col-sm-offset-2 col-sm-10">
+	                        <button type="submit" class="btn btn-primary" ng-disabled="activityForm.$invalid || (!creatingActivity.monday && 
+	                        !creatingActivity.tuesday && !creatingActivity.wednesday && !creatingActivity.thursday && 
+                            !creatingActivity.friday && !creatingActivity.saturday && !creatingActivity.sunday)">Cadastrar nova atividade</button>
 	                    </div>
 	                </div>
 	            </form>
@@ -60,31 +127,87 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Atualizar atividade</h4>
+                <h4 class="modal-title">Atualizar atividade {{organization.activities[getActivityIndex()].name}}</h4>
             </div>
             <div class="modal-body">
 	            <form class="form-horizontal" name="updatingActivityForm" ng-submit="updateActivity()" novalidate>
+	            	<input type="hidden" id="activityIndex">
 	                <div class="form-group" ng-class="{ 'has-error' : updatingActivityForm.name.$error.required && !updatingActivityForm.name.$pristine }">
-	                    <input type="hidden" id="activityIndex">
-	                    <label for="name" class="col-sm-1 control-label">Nome</label>
-	                    <div class="col-sm-11">
-	                        <input type="text" class="form-control" id="updatingActivityName" name="name" placeholder="Nome da atividade" 
-	                        ng-model="updatingActivity.name" required>
+	                    <label for="name" class="col-sm-2 control-label">Nome</label>
+	                    <div class="col-sm-10">
+	                        <input type="text" class="form-control" id="updatingActivityName" name="name" placeholder="Nome da atividade"
+	                        ng-model="organization.activities[getActivityIndex()].name" required>
 	                        <span ng-show="updatingActivityForm.name.$error.required && !updatingActivityForm.name.$pristine" class="help-block">Insira o nome da atividade</span>
 	                    </div>
 	                </div>
-                    <div class="form-group">
-                    	<div class="col-sm-12">
-	                        <button type="submit" class="btn btn-info" ng-disabled="updatingActivityForm.$invalid">Salvar</button>
-	                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
-                   		</div>
-                    </div>
+	               <div class="form-group">
+	                   <label for="category" class="col-sm-2 control-label">Categoria</label>
+	                   <div class="col-sm-10">
+		                   <select class="form-control" id="updatingActivityCategory"
+		                      ng-model="organization.activities[getActivityIndex()].category"
+		                      ng-options="category.value as category.label for category in categories">
+		                   </select>
+	                   </div>
+	               </div>
+	                <div class="form-group" ng-class="{ 'has-error' : updatingActivityForm.description.$error.required && !updatingActivityForm.description.$pristine }">
+	                    <label for="description" class="col-sm-2 control-label">Descrição</label>
+	                    <div class="col-sm-10">
+	                        <input type="text" class="form-control" id="updatingActivityDescription" name="description" placeholder="Descrição da atividade"
+	                        ng-model="organization.activities[getActivityIndex()].description" required>
+	                        <span ng-show="updatingActivityForm.description.$error.required && !updatingActivityForm.description.$pristine" class="help-block">Insira a descrição da atividade</span>
+	                    </div>
+	                </div>
+	               <div class="form-group">
+	                   <label for="periodicity" class="col-sm-2 control-label">Periodicidade</label>
+	                   <div class="col-sm-10">
+		                   <select class="form-control" id="updatingActivityPeriodicity"
+		                      ng-model="organization.activities[getActivityIndex()].periodicity"
+		                      ng-options="periodicity.value as periodicity.label for periodicity in periodicities">
+		                   </select>
+	                   </div>
+	               </div>
+					<div class="form-group" ng-class="{ 'has-error' : !organization.activities[getActivityIndex()].monday && !organization.activities[getActivityIndex()].tuesday && !organization.activities[getActivityIndex()].wednesday &&
+							!organization.activities[getActivityIndex()].thursday && !organization.activities[getActivityIndex()].friday && !organization.activities[getActivityIndex()].saturday && !organization.activities[getActivityIndex()].sunday}">
+                        <label class="col-sm-2 control-label">Dias</label>                        
+                        <div class="col-sm-10">
+                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" id="updatingActivityMonday" ng-model="organization.activities[getActivityIndex()].monday"> Segunda</label>
+                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" id="updatingActivityTuesday" ng-model="organization.activities[getActivityIndex()].tuesday"> Terça</label>
+                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" id="updatingActivityWednesday" ng-model="organization.activities[getActivityIndex()].wednesday"> Quarta</label>
+                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" id="updatingActivityThursday" ng-model="organization.activities[getActivityIndex()].thursday"> Quinta</label>
+                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" id="updatingActivityFriday" ng-model="organization.activities[getActivityIndex()].friday"> Sexta</label>
+                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" id="updatingActivitySaturday" ng-model="organization.activities[getActivityIndex()].saturday"> Sábado</label>
+                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" id="updatingActivitySunday" ng-model="organization.activities[getActivityIndex()].sunday"> Domingo</label>
+                            <span ng-show="!organization.activities[getActivityIndex()].monday && !organization.activities[getActivityIndex()].tuesday && !organization.activities[getActivityIndex()].wednesday && !organization.activities[getActivityIndex()].thursday && 
+                            	!organization.activities[getActivityIndex()].friday && !organization.activities[getActivityIndex()].saturday && !organization.activities[getActivityIndex()].sunday" class="help-block">A atividade deve ocorrer em algum dia da semana</span>
+                        </div>
+                    </div>	                
+                    <div class="form-group" ng-class="{ 'has-error' : updatingActivityForm.beginningTime.$error.required && !updatingActivityForm.beginningTime.$pristine }">
+	                    <label for="beginningTime" class="col-sm-2 control-label">Início</label>
+	                    <div class="col-sm-10">
+	                        <input type="text" class="form-control" id="updatingActivityBeginningTime" name="beginningTime" ng-model="organization.activities[getActivityIndex()].beginningTime" ng-readonly="true" required>
+	                        <span ng-show="updatingActivityForm.beginningTime.$error.required && !updatingActivityForm.beginningTime.$pristine" class="help-block">Insira o horário de início da atividade</span>
+	                    </div>
+	                </div>
+	                <div class="form-group" ng-class="{ 'has-error' : updatingActivityForm.endingTime.$error.required && !updatingActivityForm.endingTime.$pristine }">
+	                    <label for="endingTime" class="col-sm-2 control-label">Término</label>
+	                    <div class="col-sm-10">
+	                        <input type="text" style="position: relative; z-index: 10000 !important;" class="form-control" id="updatingActivityEndingTime" name="endingTime" ng-model="organization.activities[getActivityIndex()].endingTime" ng-readonly="true" required>
+	                        <span ng-show="updatingActivityForm.endingTime.$error.required && !updatingActivityForm.endingTime.$pristine" class="help-block">Insira o horário de término da atividade</span>
+	                    </div>
+	                </div>
+	                <div class="form-group">
+	                    <div class="col-sm-offset-2 col-sm-10">
+	                        <button type="submit" class="btn btn-primary" ng-disabled="updatingActivityForm.$invalid || (!organization.activities[getActivityIndex()].monday && 
+	                        !organization.activities[getActivityIndex()].tuesday && !organization.activities[getActivityIndex()].wednesday && !organization.activities[getActivityIndex()].thursday && 
+                            !organization.activities[getActivityIndex()].friday && !organization.activities[getActivityIndex()].saturday && !organization.activities[getActivityIndex()].sunday)">Salvar</button>
+	                    </div>
+	                </div>
                 </form>
             </div>
         </div>
         </div>
     </div>
-    
+	
 </body>
     
 </html>
