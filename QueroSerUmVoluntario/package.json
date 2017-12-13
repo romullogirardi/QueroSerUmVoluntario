@@ -1,0 +1,40 @@
+{
+  "name": "queroserumvoluntario",
+  "version": "1.0.0",
+  "description": "A volunteers site.",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/romullogirardi/QueroSerUmVoluntario.git"
+  },
+  "keywords": [
+    "volunteer"
+  ],
+  "author": "Rômullo Girardi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/romullogirardi/QueroSerUmVoluntario/issues"
+  },
+  "homepage": "https://github.com/romullogirardi/QueroSerUmVoluntario#readme",
+  "devDependencies": {
+    "browser-sync": "^2.18.13",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-cache": "^1.0.1",
+    "gulp-changed": "^3.1.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-imagemin": "^4.0.0",
+    "gulp-jshint": "^2.0.4",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-notify": "^3.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-rev": "^8.1.0",
+    "gulp-uglify": "^3.0.0",
+    "gulp-usemin": "^0.3.28",
+    "jshint": "^2.9.5",
+    "jshint-stylish": "^2.2.1"
+  }
+}

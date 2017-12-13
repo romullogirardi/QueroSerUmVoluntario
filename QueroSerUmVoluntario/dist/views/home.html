@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    
+<body>
+
+    <div class="container" ng-controller="IndexController">
+
+        <div class="row row-content">
+            <div class="col-xs-12">
+            	<table id="table" class="display" cellspacing="0" width="100%">
+				</table>			            
+            </div>
+            	<div id="map" style="width:100%;height:400px;"></div>
+            </div>
+        </div>
+	</div>
+	
+	<!-- Google Maps -->
+	<script>
+
+	function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: {lat: -34.397, lng: 150.644}
+        });
+        var geocoder = new google.maps.Geocoder();
+        var address = "Avenida José Luís Ferraz, 400, Recreio dos Bandeirantes, Rio de janeiro";
+        geocoder.geocode({'address': address}, function(results, status) {
+        	if (status === 'OK') {
+	            map.setCenter(results[0].geometry.location);
+	            var marker = new google.maps.Marker({
+	              map: map,
+	              position: results[0].geometry.location
+	            });
+          	} 
+        	else {
+	            console.log('Geocode was not successful for the following reason: ' + status);
+        	}
+        });
+      }
+    </script>
+    <script async defer
+	    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCknAyn4b-9xKaeZzBxuIuOmliZpkLuTsk&callback=initMap">
+    </script>
+
+</body>
+
+</html>
