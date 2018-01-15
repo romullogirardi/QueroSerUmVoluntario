@@ -102,6 +102,16 @@
                        <span ng-show="organizationForm.address.$error.required && !organizationForm.address.$pristine" class="help-block">Insira o endereço da sua organização</span>
                    </div>
                </div>
+               <div class="form-group">
+                   <label for="neighborhood" class="col-sm-4 control-label">Bairro</label>
+                   <div class="col-sm-8">
+	                   <select class="form-control" id="neighborhood"
+	                      ng-model="organization.neighborhood"
+	                      ng-options="neighborhood.value as neighborhood.label for neighborhood in neighborhoods">
+	                   </select>
+                   </div>
+               </div>
+               
                <div class="form-group" ng-class="{ 'has-error' : organizationForm.phone.$error.required && !organizationForm.phone.$pristine }">
                    <label for="phone" class="col-sm-4 control-label">Telefone</label>
                    <div class="col-sm-8">

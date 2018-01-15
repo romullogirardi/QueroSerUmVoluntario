@@ -36,10 +36,23 @@ angular.module('volunteerApp')
 	        }
 	    );
     }
-    
-    //Defining function to register an activity in a organization
-    $scope.creatingActivity = {name:"", category:"Educação", description:"", periodicity:"Semanal", monday:true, tuesday:true,  
-    		wednesday:true,  thursday:true,  friday:true,  saturday:true,  sunday:true, beginningTime:"12:00", endingTime:"13:00"};
+
+    //Setting form default values
+    $scope.creatingActivity = {
+		name:"", 
+		category:"Educação", 
+		description:"", 
+		periodicity:"Semanal", 
+		monday:true, 
+		tuesday:true,  
+		wednesday:true,  
+		thursday:true,  
+		friday:true,  
+		saturday:true,  
+		sunday:true, 
+		beginningTime:"12:00", 
+		endingTime:"13:00"
+	};
     //Referência: http://timepicker.co/
     jQuery('#beginningTime').timepicker({
         timeFormat: 'HH:mm',
@@ -64,6 +77,7 @@ angular.module('volunteerApp')
         scrollbar: true
     });
 
+    //Defining function to register an activity in a organization
 	$scope.pushActivity = function() {
 
 		//Getting time values
@@ -91,6 +105,24 @@ angular.module('volunteerApp')
 	        	console.log("Erro na atualização das atividades: " + response.status + " " + response.statusText);
 	        }
 	    );
+//		//Updating activity
+//    	organizationFactory.updateActivity($scope.organization._id, $scope.creatingActivity)
+//    	.then(
+//	        function(response) {
+//	        	console.log("Atualização das atividades realizada com sucesso");
+//	        	
+//	        	//Refreshing form
+//	        	$scope.creatingActivity = {name:"", category:"Educação", description:"", periodicity:"Semanal", monday:true, tuesday:true, 
+//	        			wednesday:true,  thursday:true,  friday:true,  saturday:true,  sunday:true, beginningTime:"12:00", endingTime:"13:00"};
+//	            $scope.activityForm.$setPristine();
+//
+//	            //Refresh page
+//	    		setTimeout(function(){$state.reload();}, 250);
+//	        },
+//	        function(response) {
+//	        	console.log("Erro na atualização das atividades: " + response.status + " " + response.statusText);
+//	        }
+//	    );
     };
 
     //Defining function to delete an activity in a organization

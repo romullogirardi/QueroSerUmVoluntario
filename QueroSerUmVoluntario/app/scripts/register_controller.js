@@ -12,6 +12,16 @@ angular.module('volunteerApp')
 	     {value:"Ateu",label:"Ateu"}
 	];
     $scope.religions = religions;
+
+    //Creating the neighborhoods array
+    var neighborhoods = [
+	     {value:"Centro", label:"Centro"},
+	     {value:"Barra da Tijuca", label:"Barra da Tijuca"}, 
+	     {value:"Recreio dos Bandeirantes",label:"Recreio dos Bandeirantes"},
+	     {value:"Taquara",label:"Taquara"},
+	     {value:"Urca",label:"Urca"}
+	];
+    $scope.neighborhoods = neighborhoods;
     
     //Putting a change listener on file chooser
     var imageURL = "";
@@ -66,7 +76,6 @@ angular.module('volunteerApp')
 	
 	//Defining function to register an organization
 	$scope.organization = {
-	    id:"",
 	    email:"",
 	    password:"",
 	    passwordConfirmation:"",
@@ -76,6 +85,7 @@ angular.module('volunteerApp')
 	    religion:"Sem religião",
 	    description:"",
 	    address:"",
+	    neighborhood:"Centro",
 	    phone:"",
 	    activities:[]
 	};

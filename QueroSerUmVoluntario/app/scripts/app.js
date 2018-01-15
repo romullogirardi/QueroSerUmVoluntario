@@ -39,5 +39,15 @@ angular.module('volunteerApp', ['ui.router', 'ngCookies'])
                }
             }
         })
+        // route for the activity details page
+        .state('app.activityDetails', {
+            url:'activityDetails',
+            views: {
+                'content@': {
+                    templateUrl : 'views/activityDetails.html',
+                    controller  : 'ActivitiesController'
+               }
+            }
+        })
         $urlRouterProvider.otherwise('/');
 })

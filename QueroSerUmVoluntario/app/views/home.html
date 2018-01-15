@@ -5,13 +5,90 @@
 
     <div class="container" ng-controller="IndexController">
 
-        <div class="row row-content">
-            <div class="col-xs-12">
+       <div class="row row-content">
+       		<div>
+				<div class="col-xs-10">
+		            <h4><b>Encontre a atividade onde você pode fazer a diferença</b></h4>
+		        </div>
+				<div class="col-xs-2">
+		            <button id="filterButton" class="btn btn-primary" ng-click="toogleFilter()">FILTRO <span id="filterButtonIcon" class="glyphicon glyphicon-chevron-down"></span></button>
+		        </div>
+				<div class="col-xs-9 col-xs-offset-1" style="margin-top:15px;padding-top:25px;background-color:#e6e6e6;border:0px solid;border-radius:20px 20px;" ng-show="showFilter">
+		            <form class="form-horizontal" name="filterForm" ng-submit="reloadTable(true)" novalidate>
+		               <div class="form-group">
+		                   <label for="category" class="col-sm-2 control-label">Categoria</label>
+		                   <div class="col-sm-10">
+			                   <select class="form-control" id="category"
+			                      ng-model="filter.category"
+			                      ng-options="category.value as category.label for category in categories">
+			                   </select>
+		                   </div>
+		               </div>
+		               <div class="form-group">
+		                   <label for="periodicity" class="col-sm-2 control-label">Periodicidade</label>
+		                   <div class="col-sm-10">
+			                   <select class="form-control" id="periodicity"
+			                      ng-model="filter.periodicity"
+			                      ng-options="periodicity.value as periodicity.label for periodicity in periodicities">
+			                   </select>
+		                   </div>
+		               </div>
+		               <div class="form-group">
+		                   <label for="religion" class="col-sm-2 control-label">Religião</label>
+		                   <div class="col-sm-10">
+			                   <select class="form-control" id="religion"
+			                      ng-model="filter.religion"
+			                      ng-options="religion.value as religion.label for religion in religions">
+			                   </select>
+		                   </div>
+		               </div>
+						<div class="form-group">
+	                        <label class="col-sm-2 control-label">Dias</label>                        
+	                        <div class="col-sm-10">
+	                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" ng-model="filter.monday"> Segunda</label>
+	                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" ng-model="filter.tuesday"> Terça</label>
+	                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" ng-model="filter.wednesday"> Quarta</label>
+	                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" ng-model="filter.thursday"> Quinta</label>
+	                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" ng-model="filter.friday"> Sexta</label>
+	                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" ng-model="filter.saturday"> Sábado</label>
+	                            <label style="padding:7px;" class="checkbox_inline"><input style="vertical-align:middle;" type="checkbox" ng-model="filter.sunday"> Domingo</label>
+	                        </div>
+	                    </div>	                
+	                    <div class="form-group">
+		                    <label for="filterBeginningTime" class="col-sm-2 control-label">Início</label>
+		                    <div class="col-sm-10">
+		                        <input type="text" class="form-control" id="filterBeginningTime" name="filterBeginningTime" ng-model="filter.filterBeginningTime" ng-readonly="true">
+		                    </div>
+		                </div>
+		                <div class="form-group">
+		                    <label for="filterEndingTime" class="col-sm-2 control-label">Término</label>
+		                    <div class="col-sm-10">
+		                        <input type="text" class="form-control" id="filterEndingTime" name="filterEndingTime" ng-model="filter.filterEndingTime" ng-readonly="true">
+		                    </div>
+		                </div>
+		               <div class="form-group">
+		                   <label for="neighborhood" class="col-sm-2 control-label">Bairro</label>
+		                   <div class="col-sm-10">
+			                   <select class="form-control" id="neighborhood"
+			                      ng-model="filter.neighborhood"
+			                      ng-options="neighborhood.value as neighborhood.label for neighborhood in neighborhoods">
+			                   </select>
+		                   </div>
+		               </div>
+		                <div class="form-group">
+		                    <div class="col-sm-offset-2 col-sm-10">
+		                        <button type="submit" class="btn btn-primary">Filtrar atividades</button>
+		                    </div>
+		                </div>
+		            </form>
+		        </div>
+	        </div>
+            <div class="col-xs-12" style="margin-top:30px;">
             	<table id="table" class="display" cellspacing="0" width="100%">
 				</table>			            
-            </div>
-            	<div id="map" style="width:100%;height:400px;"></div>
-            </div>
+<!--             </div> -->
+<!--             	<div id="map" style="width:100%; height:400px;"></div> -->
+<!--             </div> -->
         </div>
 	</div>
 	

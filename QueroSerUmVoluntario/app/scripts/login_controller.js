@@ -34,7 +34,7 @@ angular.module('volunteerApp')
     	
     	if(loginOk) {
     		//Starting user session
-    		userPersistenceFactory.setUser(organizationLogged.id);
+    		userPersistenceFactory.setUser(organizationLogged._id);
     		
     		//Load logged user acronym to refresh the user greeting
     		loadLoggedUserAcronym();

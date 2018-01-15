@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <div class="container" ng-controller="ActivitiesController">
+        <div class="row">
+            <div class="col-xs-12">
+               <ul class="breadcrumb">
+                   <li><a ui-sref="app">Home</a></li>
+                   <li class="active">Detalhes da atividade</li>
+               </ul>
+            </div>
+        </div>
+        
+        <div class="row row-content">
+        	<div class="col-xs-9 col-xs-offset-1">
+	            <p><h4><b>Detalhes da atividade</b></h4></p>
+	            <blockquote>
+	              <p><b>{{organization.activities[0].name}}</b></p>
+	              <p>Categoria: {{organization.activities[0].category}}</p>
+	              <p>Descrição: {{organization.activities[0].description}}</p>
+	              <p>Periodicidade: {{organization.activities[0].periodicity}}</p>
+	              <p>Dias da semana: {{daysToString(organization.activities[0])}}</p>
+	              <p>Horário de início: {{organization.activities[0].beginningTime}}</p>
+	              <p>Horário de término: {{organization.activities[0].endingTime}}</p>
+	            </blockquote>
+        
+				<hr/>
+
+	            <p><h4><b>Detalhes da organização</b></h4></p>
+                <div class="media">
+                    <div class="media-left media-middle">
+                        <img class="media-object img-thumbnail"
+                         ng-src={{organization.image}} alt="{{organization.name}}"/>
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h2 class="media-heading">{{organization.name}} ({{organization.acronym}})
+                        <p>{{organization.description}}</p>
+                        <p>Religião: {{organization.religion}}</p>
+                        <p>Endereço: {{organization.address}}</p>
+                        <p>Bairro: {{organization.neighborhood}}</p>
+                        <p>Telefone: {{organization.phone}}</p>
+                        <p>E-mail: {{organization.email}}</p>
+                    </div>
+                </div>
+
+
+				<hr/>
+
+	            <p><h4><b>Todas as atividades da organização</b></h4></p>
+	            <blockquote ng-repeat="activity in organization.activities">
+	              <p><b>{{activity.name}}</b></p>
+	              <p>Categoria: {{activity.category}}</p>
+	              <p>Descrição: {{activity.description}}</p>
+	              <p>Periodicidade: {{activity.periodicity}}</p>
+	              <p>Dias da semana: {{daysToString(activity)}}</p>
+	              <p>Horário de início: {{activity.beginningTime}}</p>
+	              <p>Horário de término: {{activity.endingTime}}</p>
+	            </blockquote>
+			</div>
+		</div>
+	</div>
+	
+</body>
+    
+</html>
